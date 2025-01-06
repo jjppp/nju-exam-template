@@ -28,11 +28,10 @@
           answer.with(show_answer, s),
           code_block.with(show_answer, s),
         )
-        prob.score = context s.final()
+        prob.score = s
         prob
       })
   )
-  #let total_score = problems.map(prob => prob.score).sum()
 
   #align(
     center,
@@ -64,7 +63,10 @@
     专 业：#blank_space(width:50)
   ]
 
-  #align(center)[考试时长：#exam_time 分钟；总分：#total_score 分]
+  #context {
+    let total_score = problems.map(prob => prob.score.final()).sum()
+    align(center)[考试时长：#exam_time 分钟；总分：#int(total_score) 分]
+  }
 
   #table(
     columns: (auto,) + (problems.len() + 1) * (1fr,),
@@ -106,8 +108,8 @@
       #it.body #problem.score
     ]
 
-  #for (index, problem) in problems.enumerate() {
-    [= #problem.id #problem.title (#problem.score pts)]
+  #context for (index, problem) in problems.enumerate() {
+    [= #problem.id #problem.title (#problem.score.final() pts)]
     [ \ ]
     [#problem.content]
     pagebreak()
