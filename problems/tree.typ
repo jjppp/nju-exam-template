@@ -5,7 +5,6 @@
   code_block,
 ) = {
   (
-    id: "5",
     title: [Trees],
     content: [
       *This problem is based on the assumption that all labels in a tree are different positive numbers.*

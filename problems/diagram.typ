@@ -5,7 +5,6 @@
   code_block,
 ) = {
   (
-    id: "2",
     title: [Environment Diagram],
     score: context score_state.final(),
     content: [

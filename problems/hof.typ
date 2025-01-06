@@ -5,7 +5,6 @@
   code_block,
 ) = {
   (
-    id: "3",
     title: [Higher-Order Functions],
     score: 12,
     content: [

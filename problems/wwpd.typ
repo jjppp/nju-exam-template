@@ -10,7 +10,6 @@
   code_block,
 ) = {
   (
-    id: "1",
     title: [Is it too difficult?],
     content: [
       For each of the expressions in the table below, write the output displayed by the interactive Python interpreter when the expression is evaluated.

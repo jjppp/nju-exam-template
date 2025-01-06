@@ -29,6 +29,7 @@
           code_block.with(show_answer, s),
         )
         prob.score = s
+        prob.id = index + 1
         prob
       })
   )
@@ -71,7 +72,7 @@
   #table(
     columns: (auto,) + (problems.len() + 1) * (1fr,),
     align: (center,) * (problems.len() + 2),
-    table.header([题目], ..(problems.map(x => x.id)), [总分]),
+    table.header([题目], ..(problems.map(prob => [#prob.id])), [总分]),
     [得分], ..(problems.map(_ => " ")), " ",
   )
 
