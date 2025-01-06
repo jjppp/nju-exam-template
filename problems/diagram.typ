@@ -10,7 +10,7 @@
     content: [
       Fill in the environment diagram that results from executing the code on the right until the entire program is finished, an error occurs, or all frames are filled.
 
-      *You may not need to use all of the spaces or frames.*
+      #hint[You may not need to use all of the spaces or frames.]
 
       #block(
         columns(

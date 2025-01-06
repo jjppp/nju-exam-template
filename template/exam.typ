@@ -14,6 +14,7 @@
   problems,
 ) = [
   #set page(numbering: "第1页，共1页")
+  #set table(stroke: 0.5pt)
   #set text(
     font: "Times New Roman",
     size: 11pt,
@@ -109,9 +110,27 @@
       #it.body #problem.score
     ]
 
+  #set par(spacing: 10pt)
+  #set par(leading: 6pt)
+
   #context for (index, problem) in problems.enumerate() {
-    [= #problem.id #problem.title (#problem.score.final() pts)]
-    [ \ ]
+    v(-10pt)
+    table(
+      columns: (auto, 1fr),
+      align: (left, right),
+      stroke: 0pt,
+      [#v(10pt)#text(weight: "bold", size: 17pt)[#problem.id #problem.title (#problem.score.final() pts)]],
+      box[
+        #set text(size: 9pt)
+        #table(
+          columns: (auto, 4em),
+          align: (center, center),
+          table.header([得分], " "),
+          [评分人], " ",
+        )
+      ],
+    )
+    v(-8pt)
     [#problem.content]
     pagebreak()
   }

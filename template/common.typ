@@ -16,6 +16,10 @@
   )
 })
 
+#let hint(hint) = [
+  *Hint: #hint*
+]
+
 #let answer(
   show_answer,
   score_state,
