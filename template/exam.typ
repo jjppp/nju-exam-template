@@ -19,8 +19,20 @@
     size: 11pt,
   )
   #set raw(theme: "default.tmTheme")
-  #let problems = problems.map(x => x(show_answer: show_answer))
-  #let total_score = problems.map(x => x.score).sum()
+  #let problems = (
+    problems
+      .enumerate()
+      .map(((index, prob)) => {
+        let s = state("problem" + str(index), 0)
+        let prob = prob(
+          answer.with(show_answer, s),
+          code_block.with(show_answer, s),
+        )
+        prob.score = context s.final()
+        prob
+      })
+  )
+  #let total_score = problems.map(prob => prob.score).sum()
 
   #align(
     center,
@@ -90,8 +102,11 @@
   + 试题的难度不是线性递增的，#emphasize([注意时间分配])。在这项测验中，可能有些题目较难，因此你不要在一道题上思考太久，遇到不会答的题目可先跳过，如果有时间再去思考。否则，你可能没有时间完成后面的题目。
   + 代码填空题的#emphasize([正确答案不止一种])。代码填空题答案正确即可得分，错误也不会倒扣分。每空#emphasize([最多只能填一个]) Python 语句或表达式，可以直接使用的 Python 内置函数（Python Built-in Functions）包括
     #python_builtins.join("，", last: " 和 ")。
+    #show heading: it => [
+      #it.body #problem.score
+    ]
 
-  #for problem in problems {
+  #for (index, problem) in problems.enumerate() {
     [= #problem.id #problem.title (#problem.score pts)]
     [ \ ]
     [#problem.content]

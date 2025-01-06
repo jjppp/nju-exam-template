@@ -1,8 +1,9 @@
 #import "../template/common.typ": *
 
-#let HigherOrderFunction(show_answer: false) = {
-  let code_block = code_block.with(show_answer: show_answer)
-
+#let HigherOrderFunction(
+  answer,
+  code_block,
+) = {
   (
     id: "3",
     title: [Higher-Order Functions],

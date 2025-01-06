@@ -1,13 +1,12 @@
 #import "../template/common.typ": *
 
-#let Tree(show_answer: false) = {
-  let code_block = code_block.with(show_answer: show_answer)
-  let answer = answer.with(show_answer)
-
+#let Tree(
+  answer,
+  code_block,
+) = {
   (
     id: "5",
     title: [Trees],
-    score: 23,
     content: [
       *This problem is based on the assumption that all labels in a tree are different positive numbers.*
 
@@ -31,14 +30,14 @@
                   [1],
                   (
                     [2],
-                    ([3]),
+                    [3],
                     (
                       [4],
-                      ([5]),
-                      ([6]),
+                      [5],
+                      [6],
                     ),
                   ),
-                  ([7]),
+                  [7],
                 )),
               ),
             )
@@ -117,14 +116,14 @@
                 [1],
                 (
                   [2],
-                  ([3]),
+                  [3],
                   (
                     [4],
-                    ([5]),
-                    ([6]),
+                    [5],
+                    [6],
                   ),
                 ),
-                ([7]),
+                [7],
               )),
             )
             #colbreak()
@@ -134,14 +133,14 @@
                 [28],
                 (
                   [20],
-                  ([3]),
+                  [3],
                   (
                     [15],
-                    ([5]),
-                    ([6]),
+                    [5],
+                    [6],
                   ),
                 ),
-                ([7]),
+                [7],
               )),
             )
           ],

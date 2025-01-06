@@ -16,7 +16,13 @@
   )
 })
 
-#let answer(show_answer, content, score, draw_underline: false) = {
+#let answer(
+  show_answer,
+  score_state,
+  content,
+  score,
+  draw_underline: false,
+) = {
   let content = text(red)[
     *#content*
   ]
@@ -27,30 +33,38 @@
   } else {
     [#hide(content) #h(1fr) (#score pts)]
   }
-}
-
-#let answer_code(show_answer, content) = {
-  if show_answer {
-    content
-  } else {
-    "_" * calc.max(content.len(), 10)
-  }
+  score_state.update(problem_score => problem_score + score)
 }
 
 // Workaround for code blocks with line numbering
-#let code_block(show_answer: false, code_string) = {
+#let code_block(
+  show_answer,
+  score_state,
+  content,
+) = {
   let r = regex("#\{\{(.+?)\}\}")
   let text = ""
 
-  for line in code_string.text.split("\n") {
+  for line in content.text.split("\n") {
     let matches = line.matches(r)
     let new_line = line
-    for occurence in matches {
-      let (hidden_answer, score) = occurence.captures.at(0).split("@")
-      new_line = new_line.replace(
-        occurence.text,
-        answer_code(show_answer, hidden_answer),
-      ) + " # (" + str(score) + "pts)"
+    for occurrence in matches {
+      let (hidden_answer, score) = occurrence.captures.at(0).split("@")
+      let score = int(score)
+      new_line = (
+        new_line.replace(
+          occurrence.text,
+          if show_answer {
+            hidden_answer
+          } else {
+            "_" * calc.max(occurrence.text.len(), 10)
+          },
+        )
+          + " # ("
+          + str(score)
+          + "pts)"
+      )
+      score_state.update(problem_score => problem_score + score)
     }
     text += new_line + "\n"
   }
@@ -59,14 +73,14 @@
     columns: (auto, 1fr),
     align: (right, left),
     raw(
-      lang: code_string.lang,
+      lang: content.lang,
       block: true,
-      range(1, code_string.text.split("\n").len() + 1).map(str).join("\n"),
+      range(1, content.text.split("\n").len() + 1).map(str).join("\n"),
     ),
     table.cell(
       breakable: false,
       raw(
-        lang: code_string.lang,
+        lang: content.lang,
         block: true,
         text,
       ),

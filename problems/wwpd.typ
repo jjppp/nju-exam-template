@@ -5,13 +5,13 @@
 #let Iterator = [*`Iterator`*]
 #let Forever = [*`Forever`*]
 
-#let WWPD(show_answer: false) = {
-  let answer = answer.with(show_answer)
-
+#let WWPD(
+  answer,
+  code_block,
+) = {
   (
     id: "1",
     title: [Is it too difficult?],
-    score: 14,
     content: [
       For each of the expressions in the table below, write the output displayed by the interactive Python interpreter when the expression is evaluated.
       The output may have multiple lines.
@@ -56,7 +56,7 @@
 
         [```python pow(2, 11) - 24```], [`2024`],
         [```python print(4, 5) + 1```], [`4, 5` \ #Error],
-        [```python print(print(6), 9)```], [#answer([ `6` \ `None 9` ], 2)],
+        [```python print(print(6), 9)```], [#answer([`6`], 1) \ #answer([`None 9`], 1)],
       )
     ],
   )
