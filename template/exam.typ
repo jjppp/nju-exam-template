@@ -1,21 +1,19 @@
 #import "common.typ": *
 
 #let exam(
-  course_name: (
-    en: "English Course",
-    zh: "中文课程",
-  ),
-  exam_type: (
-    en: "midterm",
-    zh: "期中考试",
-  ),
+  course_name: "课程名称",
+  course_year: 2024,
+  semester: 1, // 1 | 2
+  department: "计算机学院",
+  exam_form: "开卷", // "开卷" | "半开卷" | "闭卷"
+  exam_type: "期末", // "期中" | "期末"
+  paper_type: "A", // "A" | "B"
   instructors: ("Mable", "Dipper"),
-  year: (from: 2024, to: 2025),
-  semester: (en: "Fall", zh: "秋季学期"),
+  exam_time: 120,
   show_answer: false,
   problems,
 ) = [
-  #set page(numbering: "1 / 1")
+  #set page(numbering: "第1页，共1页")
   #set text(
     font: "Times New Roman",
     size: 11pt,
@@ -27,30 +25,40 @@
   #align(
     center,
     text(17pt)[
-      《#course_name.zh》#exam_type.zh
+      南京大学本科#(exam_type)考试试卷（#paper_type 卷）#if show_answer {
+        text(red)[标准答案]
+      }
     ],
   )
-  #align(
-    center,
-    text(15pt)[
-      （#year.from - #year.to #semester.zh，授课教师：#instructors.join("，")）
-    ],
-  )
-  #align(center)[
-    学号：#blank_space()，
-    姓名：#blank_space()，
-    院系：#blank_space()，
-    得分：#blank_space(width: 10)
-    （满分：#total_score）
+  #columns(2)[
+    #set text(weight: "bold")
+    课程名称： 《#course_name》
+
+    学年学期： #(course_year)-#(course_year + 1) 学年 第 #semester 学期
+
+    开课单位： #department
+
+    考试方式： #exam_form
+
+    #colbreak()
+    #set text(weight: "regular")
+
+    姓 名：#blank_space(width:50)
+
+    学 号：#blank_space(width:50)
+
+    年 级：#blank_space(width:50)
+
+    专 业：#blank_space(width:50)
   ]
 
+  #align(center)[考试时长：#exam_time 分钟；总分：#total_score 分]
+
   #table(
-    columns: (auto,) + problems.len() * (1fr,),
-    table.header(
-      [题目],
-      ..(problems.map(x => x.id)),
-    ),
-    [得分], ..(problems.map(_ => " ")),
+    columns: (auto,) + (problems.len() + 1) * (1fr,),
+    align: (center,) * (problems.len() + 2),
+    table.header([题目], ..(problems.map(x => x.id)), [总分]),
+    [得分], ..(problems.map(_ => " ")), " ",
   )
 
   #let python_builtins = (
