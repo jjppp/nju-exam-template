@@ -50,7 +50,7 @@
       t1 = #{{tree(1, [tree(2, [tree(3), tree(4, [tree(5), tree(6)])]), tree(7)])@3}}
       ```)
 
-      #answer([评分标准：自第1层（2/7节点所在层）开始，写对一层给1分。], 3)
+      #comment[自第1层（2/7节点所在层）开始，写对一层给1分。]
 
 
       Implement `count_leaves`, which takes in a tree and count the number of its leaves.

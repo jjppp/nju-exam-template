@@ -22,7 +22,7 @@
 
       Implement `flip`. `flip` takes a *curried* binary function `g`, returns a new function `h` that swaps `g`'s arguments.
 
-      For example, if `g` is `(lambda a: lambda b: a + b)`, then `h` should be `(lambda b: lambda a: a + b)`.
+      For example, if `g` is ```py(lambda a: lambda b: a + b)```, then `h` should be ```py(lambda b: lambda a: a + b)```.
 
       #code_block(```python
       def flip(g):

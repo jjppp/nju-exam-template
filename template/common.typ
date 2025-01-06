@@ -20,6 +20,11 @@
   *Hint: #hint*
 ]
 
+#let comment(content) = [
+  #set text(red, weight: "bold")
+  注：#content
+]
+
 #let answer(
   show_answer,
   score_state,
@@ -45,6 +50,7 @@
   show_answer,
   score_state,
   content,
+  compact: false,
 ) = {
   let r = regex("#\{\{(.+?)\}\}")
   let text = ""
@@ -74,7 +80,7 @@
   }
 
   table(
-    columns: (auto, 1fr),
+    columns: (auto, if compact { auto } else { 1fr }),
     align: (right, left),
     raw(
       lang: content.lang,

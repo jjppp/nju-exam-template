@@ -13,7 +13,14 @@
   show_answer: false,
   problems,
 ) = [
-  #set page(numbering: "第1页，共1页")
+  #set page(
+    numbering: "第1页，共1页",
+    margin: (
+      top: 2cm,
+      left: 2cm,
+      right: 2cm,
+    ),
+  )
   #set table(stroke: 0.5pt)
   #set text(
     font: "Times New Roman",
