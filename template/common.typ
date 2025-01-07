@@ -6,6 +6,7 @@
 
 #let score_states = state("score_states", ())
 #let display_answer = state("display_answer", false)
+#let display_score = state("display_score", true)
 
 #let show_answer = () => {
   display_answer.get()
@@ -52,6 +53,18 @@
   注：#content
 ]
 
+#let pts(score) = if display_score.get() {
+  [ (#score pts) ]
+} else {
+  []
+}
+
+#let pts_code(score) = if display_score.get() {
+  " # (" + str(score) + "pts)"
+} else {
+  ""
+}
+
 #let answer(
   content,
   score,
@@ -60,13 +73,15 @@
   let content = text(red)[
     *#content*
   ]
-  if show_answer() {
-    [#content #h(1fr) (#score pts)]
-  } else if draw_underline {
-    [#underline(hide(content)) #h(1fr) (#score pts)]
-  } else {
-    [#hide(content) #h(1fr) (#score pts)]
-  }
+  [
+    #if show_answer() {
+      content
+    } else if draw_underline {
+      underline(hide(content))
+    } else {
+      hide(content)
+    } #h(1fr) #pts(score)
+  ]
   update_current_problem_score(score)
 }
 
@@ -84,19 +99,15 @@
     for occurrence in matches {
       let (hidden_answer, score) = occurrence.captures.at(0).split("@")
       let score = int(score)
-      new_line = (
-        new_line.replace(
-          occurrence.text,
-          if show_answer() {
-            hidden_answer
-          } else {
-            "_" * calc.max(occurrence.text.len(), 10)
-          },
-        )
-          + " # ("
-          + str(score)
-          + "pts)"
+      new_line = new_line.replace(
+        occurrence.text,
+        if show_answer() {
+          hidden_answer
+        } else {
+          "_" * calc.max(occurrence.text.len(), 10)
+        },
       )
+      new_line += pts_code(score)
       update_current_problem_score(score)
     }
     text += new_line + "\n"

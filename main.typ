@@ -4,7 +4,8 @@
 #show: exam.with(
   course_name: "计算机程序的构造和解释",
   course_year: 2024,
-  show_answer: true,
+  show_answer: false,
+  mock: true,
 )
 
 #include "problems/wwpd.typ"
