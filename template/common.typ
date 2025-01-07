@@ -5,6 +5,11 @@
 #import "@preview/cetz:0.3.1"
 
 #let score_states = state("score_states", ())
+#let display_answer = state("display_answer", false)
+
+#let show_answer = () => {
+  display_answer.get()
+}
 
 #let number_of_problems = () => {
   int(counter(heading).final().at(0))
@@ -48,7 +53,6 @@
 ]
 
 #let answer(
-  show_answer: false,
   content,
   score,
   draw_underline: false,
@@ -56,7 +60,7 @@
   let content = text(red)[
     *#content*
   ]
-  if show_answer {
+  if show_answer() {
     [#content #h(1fr) (#score pts)]
   } else if draw_underline {
     [#underline(hide(content)) #h(1fr) (#score pts)]
@@ -68,7 +72,6 @@
 
 // Workaround for code blocks with line numbering
 #let code_block(
-  show_answer: false,
   content,
   compact: false,
 ) = context {
@@ -84,7 +87,7 @@
       new_line = (
         new_line.replace(
           occurrence.text,
-          if show_answer {
+          if show_answer() {
             hidden_answer
           } else {
             "_" * calc.max(occurrence.text.len(), 10)

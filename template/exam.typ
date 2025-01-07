@@ -27,6 +27,7 @@
     size: 11pt,
   )
   #set raw(theme: "default.tmTheme")
+  #set pagebreak(weak: true)
 
   #set heading(numbering: "1")
   #show heading: it => {
@@ -54,6 +55,8 @@
       )
     }
   }
+
+  #display_answer.update(_ => show_answer)
 
   #align(
     center,
