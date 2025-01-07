@@ -11,7 +11,7 @@
   instructors: ("Mable", "Dipper"),
   exam_time: 120,
   show_answer: false,
-  problems,
+  body,
 ) = [
   #set page(
     numbering: "第1页，共1页",
@@ -27,20 +27,33 @@
     size: 11pt,
   )
   #set raw(theme: "default.tmTheme")
-  #let problems = (
-    problems
-      .enumerate()
-      .map(((index, prob)) => {
-        let s = state("problem" + str(index), 0)
-        let prob = prob(
-          answer.with(show_answer, s),
-          code_block.with(show_answer, s),
-        )
-        prob.score = s
-        prob.id = index + 1
-        prob
+
+  #set heading(numbering: "1")
+  #show heading: it => {
+    context {
+      score_states.update(it => {
+        it + (state("wjp" + str(it.len()), 0),)
       })
-  )
+      v(-10pt)
+    }
+    context {
+      table(
+        columns: (auto, 1fr),
+        align: (left, right),
+        stroke: 0pt,
+        [#v(10pt) #box(it) (#current_problem_score() pts)],
+        box[
+          #set text(size: 9pt)
+          #table(
+            columns: (auto, 4em),
+            align: (center, center),
+            table.header([得分], " "),
+            [评分人], " ",
+          )
+        ],
+      )
+    }
+  }
 
   #align(
     center,
@@ -72,17 +85,16 @@
     专 业：#blank_space(width:50)
   ]
 
-  #context {
-    let total_score = problems.map(prob => prob.score.final()).sum()
-    align(center)[考试时长：#exam_time 分钟；总分：#int(total_score) 分]
-  }
+  #align(center)[考试时长：#exam_time 分钟；总分：#context total_problem_score() 分]
 
-  #table(
-    columns: (auto,) + (problems.len() + 1) * (1fr,),
-    align: (center,) * (problems.len() + 2),
-    table.header([题目], ..(problems.map(prob => [#prob.id])), [总分]),
-    [得分], ..(problems.map(_ => " ")), " ",
-  )
+  #context {
+    table(
+      columns: (auto,) + (number_of_problems() + 1) * (1fr,),
+      align: (center,) * (number_of_problems() + 2),
+      table.header([题目], ..(range(1, number_of_problems() + 1).map(id => [#id])), [总分]),
+      [得分], ..(range(number_of_problems()).map(_ => " ")), " ",
+    )
+  }
 
   #let python_builtins = (
     `all`,
@@ -109,36 +121,12 @@
     `zip`,
   )
 
-  注意事项：
-  + 试题的难度不是线性递增的，#emphasize([注意时间分配])。在这项测验中，可能有些题目较难，因此你不要在一道题上思考太久，遇到不会答的题目可先跳过，如果有时间再去思考。否则，你可能没有时间完成后面的题目。
-  + 代码填空题的#emphasize([正确答案不止一种])。代码填空题答案正确即可得分，错误也不会倒扣分。每空#emphasize([最多只能填一个]) Python 语句或表达式，可以直接使用的 Python 内置函数（Python Built-in Functions）包括
-    #python_builtins.join("，", last: " 和 ")。
-    #show heading: it => [
-      #it.body #problem.score
-    ]
-
   #set par(spacing: 10pt)
   #set par(leading: 6pt)
 
-  #context for (index, problem) in problems.enumerate() {
-    v(-10pt)
-    table(
-      columns: (auto, 1fr),
-      align: (left, right),
-      stroke: 0pt,
-      [#v(10pt)#text(weight: "bold", size: 17pt)[#problem.id #problem.title (#problem.score.final() pts)]],
-      box[
-        #set text(size: 9pt)
-        #table(
-          columns: (auto, 4em),
-          align: (center, center),
-          table.header([得分], " "),
-          [评分人], " ",
-        )
-      ],
-    )
-    v(-8pt)
-    [#problem.content]
-    pagebreak()
-  }
+  注意事项：
+  + 试题的难度不是线性递增的，#emphasize[注意时间分配]。在这项测验中，可能有些题目较难，因此你不要在一道题上思考太久，遇到不会答的题目可先跳过，如果有时间再去思考。否则，你可能没有时间完成后面的题目。
+  + 代码填空题的#emphasize[正确答案不止一种]。代码填空题答案正确即可得分，错误也不会倒扣分。每空#emphasize[最多只能填一个] Python 语句或表达式，可以直接使用的 Python 内置函数（Python Built-in Functions）包括 #python_builtins.join("，", last: " 和 ")。
+
+  #body
 ]
