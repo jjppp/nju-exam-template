@@ -24,6 +24,7 @@
   )
   #set table(stroke: 0.5pt)
   #set text(
+    lang: "zh",
     font: "Times New Roman",
     size: 11pt,
   )
@@ -36,8 +37,8 @@
       score_states.update(it => {
         it + (state("wjp" + str(it.len()), 0),)
       })
-      v(-10pt)
     }
+    v(-15pt)
     context {
       table(
         columns: (auto, 1fr),
@@ -87,15 +88,17 @@
       考试方式： #exam_form
 
       #colbreak()
-      #set text(weight: "regular")
+      #align(right)[
+        #set text(weight: "regular")
 
-      姓 名：#blank_space(width:50)
+        姓 名：#blank_space(width:60)
 
-      学 号：#blank_space(width:50)
+        学 号：#blank_space(width:60)
 
-      年 级：#blank_space(width:50)
+        年 级：#blank_space(width:60)
 
-      专 业：#blank_space(width:50)
+        专 业：#blank_space(width:60)
+      ]
     ]
 
     align(center)[考试时长：#exam_time 分钟；总分：#context total_problem_score() 分]
